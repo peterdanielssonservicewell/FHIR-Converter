@@ -22,15 +22,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         /// Appends mappings from another CodeMapping instance.
         /// Throws InvalidOperationException if any key path already exists with a different value.
         /// </summary>
-        /// <param name="other">The other CodeMapping to append.</param>
-        public void Append(CodeMapping other)
+        /// <param name="additionalMapping">The CodeMapping to append.</param>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="mappingToAppend"/> is null.</exception>
+        /// <exception cref="InvalidOperationException">Thrown if any key path already exists with a different value.</exception>
+        public void Append(CodeMapping additionalMapping)
         {
-            if (other == null)
-            {
-                throw new ArgumentNullException(nameof(other));
-            }
+            ArgumentNullException.ThrowIfNull(additionalMapping, nameof(additionalMapping));
 
-            foreach (var level1 in other.Mapping)
+            foreach (var level1 in additionalMapping.Mapping)
             {
                 if (!Mapping.TryGetValue(level1.Key, out var level2Dict))
                 {
